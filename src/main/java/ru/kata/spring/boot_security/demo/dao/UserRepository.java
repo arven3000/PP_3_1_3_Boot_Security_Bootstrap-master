@@ -6,17 +6,18 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.model.User;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Query("SELECT u FROM User u")
-    List<User> getAll();
+    @Query("SELECT u FROM User u join fetch u.roles")
+    Set<User> getAll();
 
     User getUserById(Long id);
 
-    @Query("SELECT u from User u where u.email=:email")
+    @Query("SELECT u from User u join fetch u.roles where u.email=:email")
     Optional<User> findByEmail(@Param("email") String email);
+
 
 }

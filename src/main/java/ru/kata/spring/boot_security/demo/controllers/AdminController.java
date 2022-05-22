@@ -25,20 +25,16 @@ public class AdminController {
 
     @GetMapping
     public String showAllUsers(Model model, Principal principal) {
-
-        User authUser = userService.findByEmail(principal.getName()).get();
-        System.out.println(authUser);
-        List<User> users = userService.listUsers();
-        model.addAttribute("users", users);
-        model.addAttribute("authUser", authUser);
-
+        model.addAttribute("users", userService.listUsers());
+        model.addAttribute("authUser",
+                userService.findByEmail(principal.getName()).get());
         return "index";
     }
 
     @GetMapping("/new")
     public String newUser(Model model, Principal principal) {
-        User authUser = userService.findByEmail(principal.getName()).get();
-        model.addAttribute("authUser", authUser);
+        model.addAttribute("authUser",
+                userService.findByEmail(principal.getName()).get());
         model.addAttribute("user", new User());
         return "new-user";
     }

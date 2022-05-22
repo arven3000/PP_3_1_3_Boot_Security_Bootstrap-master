@@ -35,8 +35,8 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .map(User::getEmail)
                 .anyMatch(e -> e.equals(user.getEmail()));
-        Optional<User> userFromDB = userRepository.findByEmail(user.getUsername());
 
+        Optional<User> userFromDB = userRepository.findByEmail(user.getUsername());
 
         if (checkedEmail && !userFromDB.get().getId().equals(user.getId())) {
             throw new RuntimeException("This mail is already in use");
@@ -55,12 +55,12 @@ public class UserServiceImpl implements UserService {
         } else if (!userFromDB.get().getPassword().equals(user.getPassword())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        userRepository.saveAndFlush(user);
+        userRepository.save(user);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<User> listUsers() {
+    public Set<User> listUsers() {
         return userRepository.getAll();
     }
 
